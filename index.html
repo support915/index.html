@@ -48,7 +48,6 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-12 md:py-20">
-        <!-- Title Section -->
         <div class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-bold mb-4">お問い合わせ</h1>
             <p class="text-slate-500 max-w-lg mx-auto">
@@ -56,65 +55,57 @@
             </p>
         </div>
 
-        <!-- Contact Form Container -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10">
-            
-            <!-- Formspree Integration -->
+            <!-- Formspree Integration with redirect feature -->
             <form id="contactForm" action="https://formspree.io/f/support@lasinva.com" method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm font-semibold mb-2">お名前 <span class="text-red-500">*</span></label>
-                        <input type="text" id="name" name="お名前" required placeholder="山田 太郎" 
+                        <input type="text" id="name" name="name" required placeholder="山田 太郎" 
                             class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
                     </div>
-                    <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-semibold mb-2">メールアドレス <span class="text-red-500">*</span></label>
-                        <input type="email" id="email" name="email" required placeholder="example@dummy.jp"
+                        <input type="email" id="email" name="_replyto" required placeholder="example@dummy.jp"
                             class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
                     </div>
                 </div>
 
-                <!-- Category -->
                 <div>
                     <label for="category" class="block text-sm font-semibold mb-2">お問い合わせ種別 <span class="text-red-500">*</span></label>
-                    <select id="category" name="種別" required
+                    <select id="category" name="category" required
                         class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white">
                         <option value="">選択してください</option>
-                        <option value="サービスについて">サービスについて</option>
-                        <option value="お支払いについて">お支払いについて</option>
-                        <option value="技術サポート">技術サポート</option>
-                        <option value="その他">その他</option>
+                        <option value="service">サービスについて</option>
+                        <option value="billing">お支払いについて</option>
+                        <option value="support">技術サポート</option>
+                        <option value="other">その他</option>
                     </select>
                 </div>
 
-                <!-- Message -->
                 <div>
                     <label for="message" class="block text-sm font-semibold mb-2">お問い合わせ内容 <span class="text-red-500">*</span></label>
-                    <textarea id="message" name="内容" rows="5" required placeholder="こちらにご記入ください"
+                    <textarea id="message" name="message" rows="5" required placeholder="こちらにご記入ください"
                         class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
                 </div>
 
-                <!-- Privacy Policy -->
                 <div class="flex items-start space-x-3">
-                    <input type="checkbox" id="privacy" name="同意" value="同意済み" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                    <input type="checkbox" id="privacy" name="_optin" value="agreed" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
                     <label for="privacy" class="text-sm text-slate-600 leading-relaxed">
                         プライバシーポリシーに同意の上、送信してください。
                     </label>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit" id="submitBtn" class="w-full md:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center justify-center space-x-2">
                         <span id="btnText">送信する</span>
                         <div id="btnSpinner" class="hidden spinner"></div>
                     </button>
                 </div>
-                <p id="formStatus" class="text-sm font-medium hidden"></p>
+                <!-- Error notification area -->
+                <div id="formStatus" class="mt-4 p-4 rounded-lg bg-red-50 text-red-700 text-sm font-medium hidden"></div>
             </form>
 
-            <!-- Success Message -->
             <div id="successMessage" class="hidden fade-in text-center py-10">
                 <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -130,7 +121,6 @@
                     ホームへ戻る
                 </button>
             </div>
-
         </div>
     </main>
 
@@ -149,41 +139,39 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // UIの状態を更新
             submitBtn.disabled = true;
             btnText.textContent = '送信中...';
             btnSpinner.classList.remove('hidden');
             statusMsg.classList.add('hidden');
 
-            const data = new FormData(form);
+            const formData = new FormData(form);
 
             try {
                 const response = await fetch(form.action, {
                     method: 'POST',
-                    body: data,
+                    body: formData,
                     headers: {
                         'Accept': 'application/json'
                     }
                 });
 
                 if (response.ok) {
-                    // 送信成功
                     form.classList.add('hidden');
                     successMessage.classList.remove('hidden');
                     window.scrollTo({ top: 100, behavior: 'smooth' });
                 } else {
-                    // エラーハンドリング
                     const errorData = await response.json();
-                    throw new Error(errorData.error || '送信に失敗しました');
+                    console.error('Formspree Error:', errorData);
+                    throw new Error(errorData.errors ? errorData.errors.map(e => e.message).join(', ') : '送信に失敗しました');
                 }
             } catch (error) {
-                // UIを戻してエラーを表示
+                console.error('Submission Error:', error);
                 submitBtn.disabled = false;
                 btnText.textContent = '送信する';
                 btnSpinner.classList.add('hidden');
-                statusMsg.textContent = 'エラーが発生しました。時間を置いて再度お試しください。';
-                statusMsg.classList.remove('hidden', 'text-green-600');
-                statusMsg.classList.add('text-red-600');
+                
+                statusMsg.textContent = 'エラー: ' + error.message + '。Formspreeの認証メールを確認してください。';
+                statusMsg.classList.remove('hidden');
             }
         });
     </script>
