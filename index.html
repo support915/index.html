@@ -56,8 +56,10 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10">
-            <!-- Formspree Integration with redirect feature -->
-            <form id="contactForm" action="https://formspree.io/f/support@lasinva.com" method="POST" class="space-y-6">
+            <!-- 
+                発行された固有URLに更新しました
+            -->
+            <form id="contactForm" action="https://formspree.io/f/mqedvyve" method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block text-sm font-semibold mb-2">お名前 <span class="text-red-500">*</span></label>
@@ -66,7 +68,7 @@
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-semibold mb-2">メールアドレス <span class="text-red-500">*</span></label>
-                        <input type="email" id="email" name="_replyto" required placeholder="example@dummy.jp"
+                        <input type="email" id="email" name="email" required placeholder="example@dummy.jp"
                             class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
                     </div>
                 </div>
@@ -90,7 +92,7 @@
                 </div>
 
                 <div class="flex items-start space-x-3">
-                    <input type="checkbox" id="privacy" name="_optin" value="agreed" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                    <input type="checkbox" id="privacy" name="privacy_agreed" value="yes" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
                     <label for="privacy" class="text-sm text-slate-600 leading-relaxed">
                         プライバシーポリシーに同意の上、送信してください。
                     </label>
@@ -102,7 +104,7 @@
                         <div id="btnSpinner" class="hidden spinner"></div>
                     </button>
                 </div>
-                <!-- Error notification area -->
+                <!-- エラー通知エリア -->
                 <div id="formStatus" class="mt-4 p-4 rounded-lg bg-red-50 text-red-700 text-sm font-medium hidden"></div>
             </form>
 
@@ -114,7 +116,7 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-4">送信が完了しました</h2>
                 <p class="text-slate-500 mb-8">
-                    support@lasinva.com 宛にメッセージをお送りしました。<br>
+                    お問い合わせありがとうございます。<br>
                     担当者より折り返しご連絡いたします。
                 </p>
                 <button onclick="window.location.reload()" class="px-6 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition">
@@ -162,7 +164,11 @@
                 } else {
                     const errorData = await response.json();
                     console.error('Formspree Error:', errorData);
-                    throw new Error(errorData.errors ? errorData.errors.map(e => e.message).join(', ') : '送信に失敗しました');
+                    let errorMsg = '送信に失敗しました。';
+                    if (errorData.errors) {
+                        errorMsg = errorData.errors.map(err => err.message).join(', ');
+                    }
+                    throw new Error(errorMsg);
                 }
             } catch (error) {
                 console.error('Submission Error:', error);
@@ -170,7 +176,7 @@
                 btnText.textContent = '送信する';
                 btnSpinner.classList.add('hidden');
                 
-                statusMsg.textContent = 'エラー: ' + error.message + '。Formspreeの認証メールを確認してください。';
+                statusMsg.textContent = 'エラー: ' + error.message;
                 statusMsg.classList.remove('hidden');
             }
         });
