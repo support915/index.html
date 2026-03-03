@@ -32,7 +32,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
 
-    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -41,7 +40,6 @@
             </div>
             <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
                 <a href="#" class="hover:text-blue-600 transition">ホーム</a>
-                <a href="#" class="hover:text-blue-600 transition">サービス</a>
                 <a href="#" class="hover:text-blue-600 transition font-bold text-blue-600 border-b-2 border-blue-600 pb-1">お問い合わせ</a>
             </nav>
         </div>
@@ -51,51 +49,46 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-bold mb-4">お問い合わせ</h1>
             <p class="text-slate-500 max-w-lg mx-auto">
-                サービスに関するご質問など、お気軽にお問い合わせください。
+                ご質問やサポートが必要な場合は、以下のフォームよりご連絡ください。
             </p>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10">
-            <!-- 
-                発行された固有URLに更新しました
-            -->
+            <!-- Formspree Endpoint: https://formspree.io/f/mqedvyve -->
             <form id="contactForm" action="https://formspree.io/f/mqedvyve" method="POST" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block text-sm font-semibold mb-2">お名前 <span class="text-red-500">*</span></label>
                         <input type="text" id="name" name="name" required placeholder="山田 太郎" 
-                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-semibold mb-2">メールアドレス <span class="text-red-500">*</span></label>
-                        <input type="email" id="email" name="email" required placeholder="example@dummy.jp"
-                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                        <input type="email" id="email" name="email" required placeholder="example@lasinva.com"
+                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
                 </div>
 
                 <div>
                     <label for="category" class="block text-sm font-semibold mb-2">お問い合わせ種別 <span class="text-red-500">*</span></label>
                     <select id="category" name="category" required
-                        class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white">
+                        class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
                         <option value="">選択してください</option>
-                        <option value="service">サービスについて</option>
-                        <option value="billing">お支払いについて</option>
-                        <option value="support">技術サポート</option>
-                        <option value="other">その他</option>
+                        <option value="Service Inquiry">サービスについて</option>
+                        <option value="Technical Support">技術サポート</option>
+                        <option value="Other">その他</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="message" class="block text-sm font-semibold mb-2">お問い合わせ内容 <span class="text-red-500">*</span></label>
-                    <textarea id="message" name="message" rows="5" required placeholder="こちらにご記入ください"
-                        class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
+                    <textarea id="message" name="message" rows="5" required placeholder="お問い合わせ内容をご記入ください"
+                        class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none transition"></textarea>
                 </div>
 
                 <div class="flex items-start space-x-3">
-                    <input type="checkbox" id="privacy" name="privacy_agreed" value="yes" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
-                    <label for="privacy" class="text-sm text-slate-600 leading-relaxed">
-                        プライバシーポリシーに同意の上、送信してください。
-                    </label>
+                    <input type="checkbox" id="privacy" name="privacy_policy_agreed" value="true" required class="mt-1 w-4 h-4 text-blue-600 border-slate-300 rounded">
+                    <label for="privacy" class="text-sm text-slate-600">プライバシーポリシーに同意します。</label>
                 </div>
 
                 <div class="pt-4">
@@ -104,10 +97,11 @@
                         <div id="btnSpinner" class="hidden spinner"></div>
                     </button>
                 </div>
-                <!-- エラー通知エリア -->
+                <!-- Error notification area -->
                 <div id="formStatus" class="mt-4 p-4 rounded-lg bg-red-50 text-red-700 text-sm font-medium hidden"></div>
             </form>
 
+            <!-- Success Message Section -->
             <div id="successMessage" class="hidden fade-in text-center py-10">
                 <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,8 +110,7 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-4">送信が完了しました</h2>
                 <p class="text-slate-500 mb-8">
-                    お問い合わせありがとうございます。<br>
-                    担当者より折り返しご連絡いたします。
+                    お問い合わせありがとうございます。内容を確認し、担当者よりご連絡いたします。
                 </p>
                 <button onclick="window.location.reload()" class="px-6 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 transition">
                     ホームへ戻る
@@ -127,7 +120,7 @@
     </main>
 
     <footer class="border-t border-slate-200 py-8 bg-white text-center text-slate-400 text-sm">
-        &copy; 2024 Dummy Corporation.
+        &copy; 2024 Dummy Corporation. All rights reserved.
     </footer>
 
     <script>
@@ -141,6 +134,7 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Disable button and show loading state
             submitBtn.disabled = true;
             btnText.textContent = '送信中...';
             btnSpinner.classList.remove('hidden');
@@ -158,20 +152,28 @@
                 });
 
                 if (response.ok) {
+                    // Success handling
                     form.classList.add('hidden');
                     successMessage.classList.remove('hidden');
                     window.scrollTo({ top: 100, behavior: 'smooth' });
                 } else {
+                    // Specific error handling for Formspree response
                     const errorData = await response.json();
-                    console.error('Formspree Error:', errorData);
+                    console.error('Formspree response error:', errorData);
+                    
                     let errorMsg = '送信に失敗しました。';
-                    if (errorData.errors) {
+                    if (errorData.errors && errorData.errors.length > 0) {
                         errorMsg = errorData.errors.map(err => err.message).join(', ');
+                    } else if (errorData.error) {
+                        errorMsg = errorData.error;
                     }
+                    
                     throw new Error(errorMsg);
                 }
             } catch (error) {
-                console.error('Submission Error:', error);
+                console.error('Submission catch error:', error);
+                
+                // Re-enable button and show error message
                 submitBtn.disabled = false;
                 btnText.textContent = '送信する';
                 btnSpinner.classList.add('hidden');
